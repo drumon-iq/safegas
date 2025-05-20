@@ -1,0 +1,43 @@
+//Definir os pinos por aqui
+
+
+
+//Variaveis para contagem do tempo
+unsigned long startTime=0;
+const unsigned long duration = 5 * 60 * 1000; // 5 minutos em milissegundos
+bool counting = false;
+unsigned long elapsed = 0; //Tempo decorrido
+
+void setup() {
+  Serial.begin(115200);
+  //startTime = millis(); //Inicia a contagem em milisec ao iniciar o programa
+}
+
+void loop() {
+
+  //Ler cada sensor
+  //Se o sensor de movimento==0 e sensor de gás ou sensor de chama == 1
+  //Contar 5 mins e mandar aviso
+  //Se houver movimento parar a contagem
+  //Caso não pare a contagem até 5 mins mandar aviso
+  //Caso não pare a contagem em até 10 mins desligar tudo
+
+  if(Movement == 0 && (Gas==1 || Flame==1) && couting==false){
+    couting=true;
+    startTime=millis();
+  }else if(Movement == 1){
+    couting = false;
+  }
+
+  if(couting){
+    elapsed = millis() - startTime;
+    if(elapsed >= duration){
+      //Passaram 5 mins
+
+      if(elapsed >= 2*duration){
+        //Desligar tudo
+      }
+    }
+  }
+
+}
