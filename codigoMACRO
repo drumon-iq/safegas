@@ -1,6 +1,20 @@
 //Definir os pinos por aqui
 
+//Sensor de movimento
+int pinoPIR = 3;
+bool movimentoAnterior = false;
 
+//Sensor de chama
+#define sensor_fogo A0
+
+//Sensor de gás
+#define sensor_gas A1
+
+//Led
+#define LED 7;
+
+//Buzzer
+#define buzzer 5;
 
 //Variaveis para contagem do tempo
 unsigned long startTime=0;
@@ -11,6 +25,68 @@ unsigned long elapsed = 0; //Tempo decorrido
 void setup() {
   Serial.begin(115200);
   //startTime = millis(); //Inicia a contagem em milisec ao iniciar o programa
+
+  pinMode(pinoPIR, INPUT); // Define o pino do sensor de movimento como entrada
+  pinMode(sensor_fogo, INPUT); // Define o pino do sensor de chama como entrada
+  pinMode(sensor_gas, INPUT); // Define o pino do sensor de gás como entrada
+
+  pinMode(LED, OUTPUT); //Define o pino do LED como saída
+  pinMode(buzzer, OUTPUT); //Define o pino do buzzer como saída
+
+  Serial.println("Aguardando calibração do PIR e do sensor de gás (30s)...");
+  delay(30000); // Tempo para o PIR e pro sensor de gás se calibrarem
+}
+
+bool flameDetected(){
+  int fogo = analogRead(sensor_fogo); // Lê o valor analógico do sensor
+
+  // Mostra o valor lido no Serial Monitor
+  // Serial.print("Valor do sensor de chamas: ");
+  // Serial.println(fogo);
+
+
+  // Se detectar fogo (valor menor que 600, ajuste conforme seu sensor)
+  if (fogo < 600) {
+    return true
+  } else {
+    return false
+  }
+}
+
+bool gasDetected(){
+  int valor = analogRead(sensor_gas);
+  // Serial.println(valor);
+
+  if (valor > 200) { // Limite mínimo para detecção
+    // digitalWrite(7, HIGH);
+    Serial.println("Gás detectado!");
+    return true
+  } else {
+    // digitalWrite(13, LOW);
+    return false;
+  }
+
+}
+
+bool movementDetected(){
+  bool movimentoAtual = (digitalRead(pinoPIR) == HIGH);
+  bool movimentoDetectado=false;
+
+
+  if (movimentoAtual != movimentoAnterior) {
+    if (movimentoAtual) {
+      //digitalWrite(pinoLED, HIGH);
+      Serial.println("Movimento detectado!");
+      movimentoDetectado=true
+    } else {
+      // digitalWrite(pinoLED, LOW);
+      Serial.println("Nenhum movimento.");
+      movimentoDetectado=false
+    }
+    movimentoAnterior = movimentoAtual;
+  }
+  return movimentoDetectado;
+
 }
 
 void loop() {
@@ -22,10 +98,16 @@ void loop() {
   //Caso não pare a contagem até 5 mins mandar aviso
   //Caso não pare a contagem em até 10 mins desligar tudo
 
-  if(Movement == 0 && (Gas==1 || Flame==1) && couting==false){
+  bool ledOn=false;
+  bool buzzerOn=false;
+
+  if(!movementDetected() && (gasDetected() || flameDetected()) && !couting){
     couting=true;
     startTime=millis();
-  }else if(Movement == 1){
+    Serial.println("Iniciando contagem de 5 minutos...");
+  }
+  
+  if(movementDetected() && counting){
     couting = false;
   }
 
@@ -33,11 +115,31 @@ void loop() {
     elapsed = millis() - startTime;
     if(elapsed >= duration){
       //Passaram 5 mins
+      //Avisar o usuario
+
+      if(!ledOn){
+        digitalWrite(LED, HIGH);
+        ledOn=true;
+      }else{
+        digitalWrite(LED, LOW);
+        ledOn=false;
+      }
+
+      if(!buzzerOn){
+        digitalWrite(buzzer, HIGH);
+        buzzerOn=true;
+      }else{
+        digitalWrite(buzzer, LOW);
+        buzzerOn=false;
+      }
+
 
       if(elapsed >= 2*duration){
-        //Desligar tudo
+        //Fechar a valvula de gás e avisar o usuario
       }
     }
   }
+
+  delay(200); //Delay pra evitar sobrecarga porém o programa num todo para
 
 }
