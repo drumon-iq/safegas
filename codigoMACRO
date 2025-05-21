@@ -11,10 +11,10 @@ bool movimentoAnterior = false;
 #define sensor_gas A1
 
 //Led
-#define LED 7;
+#define LED 7
 
 //Buzzer
-#define buzzer 5;
+#define buzzer 5
 
 //Variaveis para contagem do tempo
 unsigned long startTime=0;
@@ -47,9 +47,9 @@ bool flameDetected(){
 
   // Se detectar fogo (valor menor que 600, ajuste conforme seu sensor)
   if (fogo < 600) {
-    return true
+    return true;
   } else {
-    return false
+    return false;
   }
 }
 
@@ -60,7 +60,7 @@ bool gasDetected(){
   if (valor > 200) { // Limite mínimo para detecção
     // digitalWrite(7, HIGH);
     Serial.println("Gás detectado!");
-    return true
+    return true;
   } else {
     // digitalWrite(13, LOW);
     return false;
@@ -77,11 +77,11 @@ bool movementDetected(){
     if (movimentoAtual) {
       //digitalWrite(pinoLED, HIGH);
       Serial.println("Movimento detectado!");
-      movimentoDetectado=true
+      movimentoDetectado=true;
     } else {
       // digitalWrite(pinoLED, LOW);
       Serial.println("Nenhum movimento.");
-      movimentoDetectado=false
+      movimentoDetectado=false;
     }
     movimentoAnterior = movimentoAtual;
   }
@@ -101,17 +101,17 @@ void loop() {
   bool ledOn=false;
   bool buzzerOn=false;
 
-  if(!movementDetected() && (gasDetected() || flameDetected()) && !couting){
-    couting=true;
+  if(!movementDetected() && (gasDetected() || flameDetected()) && !counting){
+    counting=true;
     startTime=millis();
     Serial.println("Iniciando contagem de 5 minutos...");
   }
   
   if(movementDetected() && counting){
-    couting = false;
+    counting = false;
   }
 
-  if(couting){
+  if(counting){
     elapsed = millis() - startTime;
     if(elapsed >= duration){
       //Passaram 5 mins
