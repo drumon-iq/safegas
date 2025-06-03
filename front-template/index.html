@@ -1,26 +1,33 @@
 <html>
     <head>
 	<style>
-	body {background-color:CornSilk}
-	input {border:0px;border-radius:0px}
-	#d    {width:320px;margin:auto;text-align:center}
-	#s    {background-color:AliceBlue}
-	#b1 {background-color:Crimson}
-	#b2 {background-color:ForestGreen}
+	body {background-color:GhostWhite}
 	</style>
     </head>
     <body>
 	<form method="get">
 	    <fieldset>
-		<legend>Hello Master, baiter</legend>
-		<div id="d">
-		    <input type="checkbox" name="b1" id="b1" value="1">
-		    <label for="b1">tobe</label><br>
-		    <input type="checkbox" name="b2" id="b2" value="2">
-		    <label for="b2">nottobe</label>
-		</div>
+		<legend>Controle da valvula</legend>
+
+		<input type="radio" id="b1" name="v" value="1">
+		<label for="b1">Aberta</label><br>
+		<input type="radio" id="b2" name="v" value="0">
+		<label for="b2">Fechada</label><br>
 	    </fieldset>
-	    <input type="submit" value="Send" id="s">
+	    <fieldset>
+		<legend>Sensores</legend>
+
+		<input type="checkbox" id="f" name="f" value="1">
+		<label for="f">Sensor de fogo</label><br>
+		<input type="checkbox" id="g" name="g" value="1">
+		<label for="g">Sensor de gás</label><br>
+		<input type="checkbox" id="m" name="m" value="1">
+		<label for="m">Sensor de movimento</label><br>
+	    </fieldset>
+	    <input type="submit" value="Confirmar">
 	</form>
+	<h2>FOGO: não</h2>
+	<h2>Gás: não</h2>
+	<h2>Movimento: não</h2>
     </body>
 </html>
