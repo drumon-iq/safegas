@@ -8,7 +8,7 @@ void setup() {
   Serial.begin(115200);
   //startTime = millis(); //Inicia a contagem em milisec ao iniciar o programa
 
-  setup_sensores()
+  setup_sensores();
 }
 
 void loop() {
@@ -23,17 +23,18 @@ void loop() {
   bool ledOn=false;
   bool buzzerOn=false;
 
-  if(!movementDetected() && (gasDetected() || flameDetected()) && !couting){
-    couting=true;
+  if(!movementDetected() && (gasDetected() || flameDetected()) && !counting){
+    counting=true;
     startTime=millis();
     Serial.println("Iniciando contagem de 5 minutos...");
   }
   
   if(movementDetected() && counting){
-    couting = false;
+    counting = false;
+    Serial.println("Contagem de 5 minutos resetada.");
   }
 
-  if(couting){
+  if(counting){
     elapsed = millis() - startTime;
     if(elapsed >= duration){
       //Passaram 5 mins
