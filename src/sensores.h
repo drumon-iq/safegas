@@ -5,3 +5,9 @@
 
 int pinoPIR = 3;
 bool movimentoAnterior = false;
+
+void setup_sensores();
+
+bool flameDetected();
+bool gasDetected();
+bool movementDetected();
