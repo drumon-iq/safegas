@@ -1,12 +1,26 @@
 <html>
     <head>
-	<style>
-	body {background-color:GhostWhite}
-	</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+    <title>SafeGas</title>
+	<link rel="stylesheet" href="style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     </head>
     <body>
-	<form method="get">
-	    <fieldset>
+		<div id="header">
+				<div id="div_title">
+				<h2 id="title">SafeGas</h2>
+			</div>
+			<ul id="links">
+				<li><a href="" class="link">Valvula</a></li>
+				<li><a href="" class="link">Sensores</a></li>
+				<li><a href="" class="link">Leitura</a></li>
+			</ul>
+		</div>
+		<div id="corpo">
+			<form method="get">
+		<div id="valvula">
+		<fieldset>
 		<legend>Controle da valvula</legend>
 
 		<input type="radio" id="b1" name="v" value="1">
@@ -14,7 +28,10 @@
 		<input type="radio" id="b2" name="v" value="0">
 		<label for="b2">Fechada</label><br>
 	    </fieldset>
-	    <fieldset>
+		</div>
+
+		<div id="sensores">
+			<fieldset>
 		<legend>Sensores</legend>
 
 		<input type="checkbox" id="f" name="f" value="1">
@@ -24,10 +41,17 @@
 		<input type="checkbox" id="m" name="m" value="1">
 		<label for="m">Sensor de movimento</label><br>
 	    </fieldset>
-	    <input type="submit" value="Confirmar">
+
+		</div>
+	    <input type="submit" value="Confirmar" id="botão">
 	</form>
-	<h2>FOGO: não</h2>
-	<h2>Gás: não</h2>
-	<h2>Movimento: não</h2>
+	<div id="info">
+		<h2 class="info_h">FOGO: não</h2>
+		<h2 class="info_h">Gás: não</h2>
+		<h2 class="info_h">Movimento: não</h2>
+	</div>
+		</div>
     </body>
 </html>
+
+
