@@ -59,6 +59,7 @@ void loop() {
 
       if(elapsed >= 2*duration){
         //Fechar a valvula de gás e avisar o usuario
+        digitalWrite(relePin, LOW); //Liga o relé
       }
     }
   }
