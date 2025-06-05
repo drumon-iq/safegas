@@ -3,7 +3,9 @@
 #define LED 7
 #define buzzer 5
 
+
 int pinoPIR = 3;
+int relePin = 4;  
 bool movimentoAnterior = false;
 
 void setup_sensores();
