@@ -35,7 +35,9 @@ void setup_sensores ()
 
   pinMode(LED, OUTPUT);
   pinMode(buzzer, OUTPUT);
-
+  pinMode(relePin, OUTPUT);
+  digitalWrite(relePin, HIGH); //Inicia o relé desligado
+  
   // Tempo para o PIR e pro sensor de gás se calibrarem
   Serial.println("Aguardando calibração do PIR e do sensor de gás (30s)...");
   delay(30000);
