@@ -43,6 +43,7 @@ void setup_sensores ()
   pinMode(sensor_gas, INPUT);
   pinMode(LED, OUTPUT);
   pinMode(buzzer, OUTPUT);
+  pinMode(BOTAO, INPUT);
 
   // Tempo para o PIR e pro sensor de gás se calibrarem
   Serial.println("Aguardando calibração do PIR e do sensor de gás (30s)...");
