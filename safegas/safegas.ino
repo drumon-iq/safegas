@@ -6,6 +6,9 @@
 #define PASS "123456789"
 
 bool doDebug = false;
+bool estadoValvula = false;
+bool ultimoEstadoBotao = false;
+
 
 char client_c;
 char old_client_c = '\0';
@@ -28,6 +31,16 @@ void setup() {
 }
 
 void loop() {
+
+  bool estadoBotao = digitalRead(BOTAO_PIN);
+
+  if (estadoBotao == HIGH && ultimoEstadoBotao == LOW) {
+    estadoValvula = !estadoValvula;
+    toggleValvula(estadoValvula);
+  }
+
+  ultimoEstadoBotao = estadoBotao;
+
   unsigned long int curr_millis = millis();
 
   digitalWrite(LED, LOW);
@@ -36,14 +49,15 @@ void loop() {
   Serial.print("Timer: ");
   Serial.println(timer);
 
-  if (doDebug || (!movementDetected() && flameDetected()))
+  if (doDebug || (!movementDetected() && flameDetected() && !estadoValvula))
     timer += curr_millis - old_millis;
   else
     timer = 0;
 
-  if (timer >= 2 * duration)
+  if (timer >= 2 * duration) {
+    estadoValvula = false;
     toggleValvula(false);
-  else if (timer >= duration) {
+  } else if (timer >= duration) {
     doAlert = !doAlert; //flip pra depois flop
     digitalWrite(LED, doAlert ? HIGH : LOW);
     tone(buzzer, doAlert ? 4000 : 0);
