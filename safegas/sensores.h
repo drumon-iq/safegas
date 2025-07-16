@@ -8,12 +8,13 @@
 #define valvula 00
 
 extern bool fogoAnterior;
+extern bool valvulaVal;
 
 void setup_sensores();
 bool flameDetected();
 bool gasDetected();
 bool movementDetected();
 void playSong(unsigned long durationMillis);
-void toggleValvula(bool state);
+void setValvula(bool state);
 
 #endif
