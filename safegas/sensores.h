@@ -6,6 +6,7 @@
 #define buzzer 32
 #define pinoPIR 27
 #define valvula 00
+#define BOTAO 34
 
 extern bool fogoAnterior;
 extern bool valvulaVal;

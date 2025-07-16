@@ -6,7 +6,9 @@
 #define SSID "blyeat"
 #define PASS "123456789"
 
+extern bool valvulaVal;
 bool doDebug = true;
+bool ultimoEstadoBotao = false;
 
 char client_c;
 char old_client_c = '\0';
@@ -32,11 +34,16 @@ void setup() {
 
 void loop() {
   unsigned long int curr_millis = millis();
-
+  bool estadoBotao = digitalRead(BOTAO);
   digitalWrite(LED, LOW);
   tone(buzzer, 0);
 
-  if (doDebug || (!movementDetected() && flameDetected()))
+  if (estadoBotao == HIGH && ultimoEstadoBotao == LOW) {
+    setValvula(!valvulaVal);
+  }
+  ultimoEstadoBotao = estadoBotao;
+
+  if (doDebug || (!movementDetected() && flameDetected() && !valvulaVal))
     timer += curr_millis - old_millis;
   else
     timer = 0;

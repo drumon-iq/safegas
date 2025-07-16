@@ -5,6 +5,7 @@
 bool movimentoAnterior = false;
 bool fogoAnterior = false;
 bool alertState = false;
+bool valvulaVal = false;
 
 int odeNotes[] = {
     262, 262, 294, 330, 330, 294, 262, 247, 
@@ -45,6 +46,7 @@ void setup_sensores ()
     pinMode(LED, OUTPUT);
     pinMode(buzzer, OUTPUT);
     pinMode(valvula, OUTPUT);
+    pinMode(BOTAO, INPUT);
 
     setValvula(false);
 
