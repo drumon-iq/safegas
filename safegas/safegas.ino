@@ -1,13 +1,13 @@
 #include <WiFi.h>
-#include "sensores.h"
+#include "perifericos.h"
 #include "util.h"
 #include "webpage.h"
 
 #define SSID "blyeat"
 #define PASS "123456789"
 
-extern bool valvulaVal;
 bool doDebug = true;
+bool doDummy = true;
 bool ultimoEstadoBotao = false;
 
 char client_c;
@@ -20,8 +20,7 @@ WiFiClient client;
 void setup() {
   Serial.begin(115200);
 
-  if (!doDebug)
-    setup_sensores();
+  setup_sensores();
 
   set_duration_min(doDebug ? 1 : 5);
   timer = 0;
@@ -43,14 +42,16 @@ void loop() {
   }
   ultimoEstadoBotao = estadoBotao;
 
-  if (doDebug || (!movementDetected() && flameDetected() && !valvulaVal))
+  if (doDummy)
+    timer += curr_millis - old_millis;
+  else if (!movementDetected() && flameDetected() && !valvulaVal)
     timer += curr_millis - old_millis;
   else
     timer = 0;
 
   if (timer >= 2 * duration)
     setValvula(false);
-  else if (timer >= duration) {
+  else if (timer >= duration && timer % 4000 == 0) { // Supostamente 4 segundos
     doAlert = !doAlert; //flip pra depois flop
     digitalWrite(LED, doAlert ? HIGH : LOW);
     tone(buzzer, doAlert ? 4000 : 0);
@@ -73,13 +74,17 @@ void loop() {
         // Decide what to print
         // Holy mother of inefficiency
         if (Sbuffer.indexOf("gasValue") != -1){
-          client.println(analogRead(sensor_gas));
+          client.println(doDummy ? 1234 : analogRead(sensor_gas));
         } else if (Sbuffer.indexOf("flameValue") != -1){
-          client.println(analogRead(sensor_fogo));
+          client.println(doDummy ? 4321 : analogRead(sensor_fogo));
         } else if (Sbuffer.indexOf("valveValue") != -1) {
           client.println(valvulaVal ? "1" : "0");
         } else if (Sbuffer.indexOf("toggleValve") != -1) {
-          setValvula(!valvulaVal);
+          if (doDummy)
+            valvulaVal = !valvulaVal;
+          else
+            setValvula(!valvulaVal);
+
           client.println(webpage);
         } else {
           client.println(webpage);

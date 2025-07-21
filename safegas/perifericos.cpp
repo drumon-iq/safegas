@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <stdbool.h>
-#include "sensores.h"
+#include "perifericos.h"
+#include "util.h"
 
 bool movimentoAnterior = false;
 bool fogoAnterior = false;
@@ -48,11 +49,13 @@ void setup_sensores ()
     pinMode(valvula, OUTPUT);
     pinMode(BOTAO, INPUT);
 
-    setValvula(false);
-
-    // Tempo para o PIR e pro sensor de gás se calibrarem
-    Serial.println("Aguardando calibração do PIR e do sensor de gás (30s)...");
-    delay(30000);
+    if (!doDummy) {
+	setValvula(false);
+	delay(30000); // Tempo para o PIR e pro sensor de gás se calibrarem (?? porque ??)
+    } else {
+	Serial.println("Pulando calibragem do PIR e sensor de gás");
+	valvulaVal = false;
+    }
 }
 
 void playSong(unsigned long durationMillis) {
