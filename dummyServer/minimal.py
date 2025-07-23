@@ -20,13 +20,18 @@ def penar():
     return "https://i.kym-cdn.com/photos/images/newsfeed/002/635/266/7f8"
 
 @app.route("/valveValue")
-def toggleValve():
-    return str(randrange(0,2));
+def getValveValue():
+    return str(randrange(0,2))
 
 @app.route("/gasValue")
-def gaslValue():
-    return str(randrange(0,1000));
+def getGasValue():
+    return str(randrange(0,1000))
 
 @app.route("/flameValue")
-def flameValue():
-    return str(randrange(0,1000));
+def getFlameValue():
+    return str(randrange(0,1000))
+
+@app.route("/toggleValve")
+def toggleValve():
+    print("Toggled valve")
+    return "womp"

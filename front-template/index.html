@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width">
+	<meta charset='UTF-8'>
+	<meta name='viewport' content='width=device-width'>
 	<title>SafeGas</title>
 	<style>
 	a {
@@ -14,7 +14,7 @@
 	align-items:center;
 	flex-direction:column
 	}
-	#divB {
+	#valveBut {
 	border: solid black;
 	width:200px;
 	padding: 20px 0 20px 0;
@@ -33,57 +33,55 @@
 	</style>
     </head>
     <body>
-	<h2 id="warning">No connection avaible</h2>
+	<h2 id='warning'>No connection avaible</h2>
 	<main>
 	<h2>SafeGas</h2>
-	<div id="divB">
-	    <a id="valveBut" href="/toggleValve" style="">
+	    <button id='valveBut' onClick='getData(apiUrl + "toggleValve")' style=''>
 		undefined
-	    </a>
-	</div>
+	    </button>
 	<details>
 	    <summary>Detalhes e configurações</summary>
 	    <ul>
-		<li id="gas">Gas value: Not defined</li>
-		<li id="flame">Flame value: Not defined</li>
+		<li id='gas'>Gas value: Not defined</li>
+		<li id='flame'>Flame value: Not defined</li>
 	    </ul>
 	</details>
 	</main>
 	<script defer>
-	const apiUrl = "http://192.168.4.1/"
-	const warning = document.getElementById("warning");
-	const gasItem = document.getElementById("gas");
-	const flameItem = document.getElementById("flame");
-	const valveB = document.getElementById("valveBut");
+	const apiUrl = 'http://127.0.0.1:5000/';
+	const warning = document.getElementById('warning');
+	const gasItem = document.getElementById('gas');
+	const flameItem = document.getElementById('flame');
+	const valveB = document.getElementById('valveBut');
 
 	async function getData(url) {
 	    try {
 		const response = await fetch(url);
-		warning.style.visibility = "hidden";
+		warning.style.visibility = 'hidden';
 		return await response.text();
 	    } catch (error) {
-		warning.style.visibility = "visible";
-		return "connection failed";
+		warning.style.visibility = 'visible';
+		return 'connection failed';
 	    }
 	}
 	setInterval(() => {
-	    getData(apiUrl + "gasValue").then(
+	    getData(apiUrl + 'gasValue').then(
 		function(res) {
-		    gasItem.innerText = "Gas value: " + res;
+		    gasItem.innerText = 'Gas value: ' + res;
 		}
 	    );
-	    getData(apiUrl + "flameValue").then(
+	    getData(apiUrl + 'flameValue').then(
 		function(res) {
-		    flameItem.innerText = "Flame value: " + res;
+		    flameItem.innerText = 'Flame value: ' + res;
 		}
 	    );
-	    getData(apiUrl + "valveValue").then(
+	    getData(apiUrl + 'valveValue').then(
 		function(res) {
-		    if (res === "1") {
-			valveB.innerText = "Abrir Valvula";
+		    if (res.includes('1')) {
+			valveB.innerText = 'Fechar Valvula';
 		    }
 		    else {
-			valveB.innerText = "Fechar Valvula";
+			valveB.innerText = 'Abrir Valvula';
 		    }
 		});
 	}, 1000);

@@ -59,12 +59,10 @@ void loop() {
 
   // Maybe loop the client reading before moving on?
   if (client) {
-    if (client.available() && client.connected()) {
-
+    while (client.available() && client.connected()) {
       client_c = client.read();
       Serial.write(old_client_c);
       Sbuffer += client_c;
-
       // End of HTTP request, an \r followed by an \n
       if (client_c == '\n' && old_client_c == '\r') {
         client.println("HTTP/1.1 200 OK");
@@ -74,11 +72,11 @@ void loop() {
         // Decide what to print
         // Holy mother of inefficiency
         if (Sbuffer.indexOf("gasValue") != -1){
-          client.println(doDummy ? 1234 : analogRead(sensor_gas));
+          client.print(doDummy ? 1234 : analogRead(sensor_gas));
         } else if (Sbuffer.indexOf("flameValue") != -1){
-          client.println(doDummy ? 4321 : analogRead(sensor_fogo));
+          client.print(doDummy ? 4321 : analogRead(sensor_fogo));
         } else if (Sbuffer.indexOf("valveValue") != -1) {
-          client.println(valvulaVal ? "1" : "0");
+          client.print(valvulaVal ? "1" : "0");
         } else if (Sbuffer.indexOf("toggleValve") != -1) {
           setValvula(!valvulaVal);
           client.println(webpage);

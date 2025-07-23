@@ -1,10 +1,10 @@
 #ifndef SENSORES_H
 
 #define sensor_fogo 13
-#define sensor_gas  2
+#define pinoPIR     2
 #define LED	    5
 #define buzzer 	    4
-#define pinoPIR     15
+#define sensor_gas  15
 #define valvula     14
 #define BOTAO 	    26
 #define SINGLE_LED  27
