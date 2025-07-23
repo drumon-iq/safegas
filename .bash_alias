@@ -1,0 +1,8 @@
+alias comp="arduino-cli compile safegas --fqbn esp32:esp32:esp32"
+alias mon="arduino-cli monitor -p /dev/ttyUSB0 --fqbn esp32:esp32:esp32 --config 115200"
+alias uplo="arduino-cli upload safegas --fqbn esp32:esp32:esp32 -p /dev/ttyUSB0"
+alias a="comp && uplo && mon"
+alias b="curl -0 192.168.4.1"
+alias c="nmcli c up blyeat"
+alias d="nmcli c up Lips"
+alias e="nmcli d wifi list"

@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+    <head>
+    </head>
+    <body>
+	<h1>Mega corporate censor</h1>
+	<figure id="myimage">
+	<img src=""/>
+	    <figcaption></figcaption>
+	</figure>
+	<script>
+	async function bogus(url) {
+	    try {
+	        const response = await fetch(url);
+	    if (!response.ok) {
+	        throw new Error("failed");
+	    }
+	        const text = await response.text();
+		return text;
+	    } catch (error) {
+	        return "failed";
+	    }
+	}
+
+	const myimage = document.getElementById("myimage");
+	
+	// Example usage:
+	bogus('http://127.0.0.1:5000')
+	.then(function(res) {
+	    if(res.includes("bitchlesslarry")) {
+		console.log("bitchless larry");
+		bogus("http://127.0.0.1:5000/bitchlesslarry")
+		.then(function(ans) {
+		    myimage.querySelector("img").src = ans;
+		    myimage.querySelector("figcaption").textContent = "Bitchless Larry";
+		    console.log(ans);
+		});
+	    } else {
+		console.log("peenar explode");
+		bogus("http://127.0.0.1:5000/peenarexplosionchamber")
+		.then(function(ans) {
+		    myimage.querySelector("img").src = ans;
+		    myimage.querySelector("figcaption").textContent = "Peenar";
+		    console.log(ans);
+		});
+	    }
+	});
+	</script>
+    </body>
+</html>
