@@ -42,7 +42,7 @@ void loop() {
   }
   ultimoEstadoBotao = estadoBotao;
 
-  if (doDummy)
+  if (doDummy && !valvulaVal)
     timer += curr_millis - old_millis;
   else if (!movementDetected() && flameDetected() && !valvulaVal)
     timer += curr_millis - old_millis;
@@ -80,11 +80,7 @@ void loop() {
         } else if (Sbuffer.indexOf("valveValue") != -1) {
           client.println(valvulaVal ? "1" : "0");
         } else if (Sbuffer.indexOf("toggleValve") != -1) {
-          if (doDummy)
-            valvulaVal = !valvulaVal;
-          else
-            setValvula(!valvulaVal);
-
+          setValvula(!valvulaVal);
           client.println(webpage);
         } else {
           client.println(webpage);
@@ -101,4 +97,5 @@ void loop() {
   }
 
   old_millis = curr_millis;
+  delay(10);
 }

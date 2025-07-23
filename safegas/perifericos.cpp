@@ -20,8 +20,13 @@ int odeDurations[] = {
 
 void setValvula(bool state)
 {
-    digitalWrite(valvula, state);
+    if (!doDummy)
+	digitalWrite(valvula, state);
+
     valvulaVal = state;
+    digitalWrite(SINGLE_LED, state);
+    Serial.print("ESTADO da valvula alterado para: ");
+    Serial.println(state);
 }
 
 bool flameDetected()
@@ -48,14 +53,12 @@ void setup_sensores ()
     pinMode(buzzer, OUTPUT);
     pinMode(valvula, OUTPUT);
     pinMode(BOTAO, INPUT);
+    pinMode(SINGLE_LED, OUTPUT);
 
-    if (!doDummy) {
-	setValvula(false);
+    if (!doDummy)
 	delay(30000); // Tempo para o PIR e pro sensor de gás se calibrarem (?? porque ??)
-    } else {
-	Serial.println("Pulando calibragem do PIR e sensor de gás");
-	valvulaVal = false;
-    }
+
+    setValvula(false);
 }
 
 void playSong(unsigned long durationMillis) {
