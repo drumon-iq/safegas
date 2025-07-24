@@ -1,90 +1,156 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-	<meta charset='UTF-8'>
-	<meta name='viewport' content='width=device-width'>
-	<title>SafeGas</title>
-	<style>
-	a {
-	text-decoration:none;
-	color:white;
-	}
-	main {
-	display:flex;
-	align-items:center;
-	flex-direction:column
-	}
-	#valveBut {
-	border: solid black;
-	width:200px;
-	padding: 20px 0 20px 0;
-	text-align:center;
-	background-color:grey;
-	margin:80px;
-	}
-	#warning {
-	color:red;
-	visibility:hidden;
-	background-color:Bisque;
-	padding:10px;
-	text-align:center;
-	border: solid DarkSalmon;
-	}
-	</style>
-    </head>
-    <body>
-	<h2 id='warning'>No connection avaible</h2>
-	<main>
-	<h2>SafeGas</h2>
-	    <button id='valveBut' onClick='getData(apiUrl + "toggleValve")' style=''>
-		undefined
-	    </button>
-	<details>
-	    <summary>Detalhes e configurações</summary>
-	    <ul>
-		<li id='gas'>Gas value: Not defined</li>
-		<li id='flame'>Flame value: Not defined</li>
-	    </ul>
-	</details>
-	</main>
-	<script defer>
-	const apiUrl = 'http://127.0.0.1:5000/';
-	const warning = document.getElementById('warning');
-	const gasItem = document.getElementById('gas');
-	const flameItem = document.getElementById('flame');
-	const valveB = document.getElementById('valveBut');
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Safe Gas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e6f2ff;
+      margin: 0;
+      padding: 100px 0 60px 0; /* Ajuste para o footer fixo */
+      min-height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
 
-	async function getData(url) {
-	    try {
-		const response = await fetch(url);
-		warning.style.visibility = 'hidden';
-		return await response.text();
-	    } catch (error) {
-		warning.style.visibility = 'visible';
-		return 'connection failed';
-	    }
-	}
-	setInterval(() => {
-	    getData(apiUrl + 'gasValue').then(
-		function(res) {
-		    gasItem.innerText = 'Gas value: ' + res;
-		}
-	    );
-	    getData(apiUrl + 'flameValue').then(
-		function(res) {
-		    flameItem.innerText = 'Flame value: ' + res;
-		}
-	    );
-	    getData(apiUrl + 'valveValue').then(
-		function(res) {
-		    if (res.includes('1')) {
-			valveB.innerText = 'Fechar Valvula';
-		    }
-		    else {
-			valveB.innerText = 'Abrir Valvula';
-		    }
-		});
-	}, 1000);
-	</script>
-    </body>
+    .card { 
+      background-color: white;
+      padding: 30px;
+      margin: 0 auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color: #007BFF;
+    }
+
+    .botao {
+      display: inline-block;
+      padding: 12px 25px;
+      margin: 8px;
+      font-size: 16px;
+      text-decoration: none;
+      color: white;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      min-width: 180px;
+    }
+
+    .botao:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .detalhes-container {
+      margin: 25px 0 0 0;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      display: none;
+      text-align: left;
+    }
+
+    .detalhes-container p {
+      margin: 10px 0;
+      font-size: 15px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #007BFF;
+      color: white;
+      padding: 12px 0;
+      text-align: center;
+      z-index: 1000;
+      font-size: 14px;
+    }
+
+    #warning {
+      color: red;
+      margin-top: 15px;
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>  
+  <div class="card">
+    <h1>Safe Gas</h1>
+    
+    <button class="botao" id="valveBut" onclick="getData(apiUrl + 'toggleValve')">
+      Indefinido
+    </button>
+    
+    <button class="botao" onclick="mostrarDetalhes()">Ver/Ocultar detalhes</button>
+    
+    <div id="detalhes" class="detalhes-container">
+      <p id="gas">Valor do Gás: Não definido</p>
+      <p id="flame">Valor da Chama: Não definido</p>
+    </div>
+    
+    <div id="warning">Erro de conexão com o servidor</div>
+  </div>
+
+  <footer>
+    LIPS UFMG
+  </footer>
+
+  <script>
+    const apiUrl = 'http://127.0.0.1:5000/';
+    const warning = document.getElementById('warning');
+    const gasItem = document.getElementById('gas');
+    const flameItem = document.getElementById('flame');
+    const valveB = document.getElementById('valveBut');
+
+    function mostrarDetalhes() {
+      const detalhes = document.getElementById('detalhes');
+      detalhes.style.display = detalhes.style.display === 'none' ? 'block' : 'none';
+    }
+
+    async function getData(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Erro na requisição');
+        warning.style.visibility = 'hidden';
+        return await response.text();
+      } catch (error) {
+        warning.style.visibility = 'visible';
+        console.error('Erro:', error);
+        return 'connection failed';
+      }
+    }
+
+    function atualizarDados() {
+      getData(apiUrl + 'gasValue').then(res => {
+        gasItem.textContent = 'Valor do Gás: ' + res;
+      });
+      
+      getData(apiUrl + 'flameValue').then(res => {
+        flameItem.textContent = 'Valor da Chama: ' + res;
+      });
+      
+      getData(apiUrl + 'valveValue').then(res => {
+        valveB.textContent = res.includes('1') ? 'Fechar Válvula' : 'Abrir Válvula';
+      });
+    }
+
+    // Atualiza imediatamente e depois a cada segundo
+    atualizarDados();
+    setInterval(atualizarDados, 1000);
+  </script>
+</body>
 </html>
