@@ -1,156 +1,148 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Safe Gas</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #e6f2ff;
-      margin: 0;
-      padding: 100px 0 60px 0; /* Ajuste para o footer fixo */
-      min-height: 100vh;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
+<html lang='pt-BR'>
+    <head>
+	<meta charset='UTF-8' />
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+	<title>Safe Gas</title>
+	<style>
+	body {
+	font-family: Arial, sans-serif;
+	background-color: #e6f2ff;
+	margin: 0;
+	padding: 100px 0 60px 0; /* Ajuste para o footer fixo */
+	min-height: 100vh;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	}
 
-    .card { 
-      background-color: white;
-      padding: 30px;
-      margin: 0 auto;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      max-width: 450px;
-      text-align: center;
-    }
+	.card { 
+	background-color: white;
+	padding: 30px;
+	margin: 0 auto;
+	border-radius: 10px;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	width: 90%;
+	max-width: 450px;
+	text-align: center;
+	}
 
-    h1 {
-      margin-bottom: 30px;
-      color: #007BFF;
-    }
+	h1 {
+	margin-bottom: 30px;
+	color: #007BFF;
+	}
 
-    .botao {
-      display: inline-block;
-      padding: 12px 25px;
-      margin: 8px;
-      font-size: 16px;
-      text-decoration: none;
-      color: white;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      min-width: 180px;
-    }
+	button {
+	display: inline-block;
+	padding: 12px 25px;
+	margin: 8px;
+	font-size: 16px;
+	text-decoration: none;
+	color: white;
+	background-color: #007BFF;
+	border: none;
+	border-radius: 8px;
+	transition: all 0.3s ease;
+	cursor: pointer;
+	min-width: 180px;
+	}
 
-    .botao:hover {
-      background-color: #0056b3;
-      transform: translateY(-2px);
-    }
+	button:hover {
+	background-color: #0056b3;
+	transform: translateY(-2px);
+	}
 
-    .detalhes-container {
-      margin: 25px 0 0 0;
-      padding: 20px;
-      background-color: #f8f9fa;
-      border-radius: 8px;
-      display: none;
-      text-align: left;
-    }
+	.detalhes-container {
+	margin: 25px 0 0 0;
+	padding: 20px;
+	background-color: #f8f9fa;
+	border-radius: 8px;
+	display: none;
+	text-align: left;
+	}
 
-    .detalhes-container p {
-      margin: 10px 0;
-      font-size: 15px;
-    }
+	.detalhes-container p {
+	margin: 10px 0;
+	font-size: 15px;
+	}
 
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background-color: #007BFF;
-      color: white;
-      padding: 12px 0;
-      text-align: center;
-      z-index: 1000;
-      font-size: 14px;
-    }
+	footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: #007BFF;
+	color: white;
+	padding: 12px 0;
+	text-align: center;
+	z-index: 1000;
+	font-size: 14px;
+	}
 
-    #warning {
-      color: red;
-      margin-top: 15px;
-      visibility: hidden;
-    }
-  </style>
-</head>
-<body>  
-  <div class="card">
-    <h1>Safe Gas</h1>
-    
-    <button class="botao" id="valveBut" onclick="getData(apiUrl + 'toggleValve')">
-      Indefinido
-    </button>
-    
-    <button class="botao" onclick="mostrarDetalhes()">Ver/Ocultar detalhes</button>
-    
-    <div id="detalhes" class="detalhes-container">
-      <p id="gas">Valor do Gás: Não definido</p>
-      <p id="flame">Valor da Chama: Não definido</p>
-    </div>
-    
-    <div id="warning">Erro de conexão com o servidor</div>
-  </div>
+	#warning {
+	color: red;
+	margin-top: 15px;
+	visibility: hidden;
+	}
+	</style>
+    </head>
+    <body>  
+	<div class='card'>
+	    <h1>Safe Gas</h1>
 
-  <footer>
-    LIPS UFMG
-  </footer>
+	    <button id='valveBut' onclick='getData(apiUrl + "toggleValve")'>
+		Indefinido
+	    </button>
 
-  <script>
-    const apiUrl = 'http://127.0.0.1:5000/';
-    const warning = document.getElementById('warning');
-    const gasItem = document.getElementById('gas');
-    const flameItem = document.getElementById('flame');
-    const valveB = document.getElementById('valveBut');
+	    <button onclick='mostrarDetalhes()'>Ver/Ocultar detalhes</button>
 
-    function mostrarDetalhes() {
-      const detalhes = document.getElementById('detalhes');
-      detalhes.style.display = detalhes.style.display === 'none' ? 'block' : 'none';
-    }
+	    <div id='detalhes' class='detalhes-container'>
+		<p id='gas'>Valor do Gás: Não definido</p>
+		<p id='flame'>Valor da Chama: Não definido</p>
+	    </div>
 
-    async function getData(url) {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Erro na requisição');
-        warning.style.visibility = 'hidden';
-        return await response.text();
-      } catch (error) {
-        warning.style.visibility = 'visible';
-        console.error('Erro:', error);
-        return 'connection failed';
-      }
-    }
+	    <div id='warning'>Erro de conexão com o servidor</div>
+	</div>
 
-    function atualizarDados() {
-      getData(apiUrl + 'gasValue').then(res => {
-        gasItem.textContent = 'Valor do Gás: ' + res;
-      });
-      
-      getData(apiUrl + 'flameValue').then(res => {
-        flameItem.textContent = 'Valor da Chama: ' + res;
-      });
-      
-      getData(apiUrl + 'valveValue').then(res => {
-        valveB.textContent = res.includes('1') ? 'Fechar Válvula' : 'Abrir Válvula';
-      });
-    }
+	<footer>
+	    LIPS UFMG
+	</footer>
 
-    // Atualiza imediatamente e depois a cada segundo
-    atualizarDados();
-    setInterval(atualizarDados, 1000);
-  </script>
-</body>
+	<script>
+	const apiUrl = 'http://192.168.4.1/';
+	const warning = document.getElementById('warning');
+	const gasItem = document.getElementById('gas');
+	const flameItem = document.getElementById('flame');
+	const valveB = document.getElementById('valveBut');
+	const detalhes = document.getElementById('detalhes');
+
+	function mostrarDetalhes() {
+	    detalhes.style.display = detalhes.style.display === 'none' ? 'block' : 'none';
+	}
+
+	async function getData(url) {
+	    try {
+		const response = await fetch(url);
+		warning.style.visibility = 'hidden';
+		return await response.text();
+	    } catch (error) {
+		warning.style.visibility = 'visible';
+		return 'connection failed';
+	    }
+	}
+
+	setInterval(() => {
+	    getData(apiUrl + 'gasValue').then(function(res) {
+		gasItem.innerText = 'Valor do Gás: ' + res;
+	    });
+	    getData(apiUrl + 'flameValue').then(function(res) {
+		flameItem.innerText = 'Valor da Chama: ' + res;
+	    });
+	    getData(apiUrl + 'valveValue').then(function(res) {
+		valveB.innerText = res.includes('1') ? 'Fechar Válvula' : 'Abrir Válvula';
+	    });
+	}, 1000);
+	</script>
+    </body>
 </html>

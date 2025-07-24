@@ -21,37 +21,38 @@ int odeDurations[] = {
 void setValvula(bool state)
 {
     if (!doDummy)
-	digitalWrite(valvula, state);
+	digitalWrite(VALVULA, state);
 
     valvulaVal = state;
     digitalWrite(SINGLE_LED, state);
+    tone(BUZZER, 1000, 300);
     Serial.print("ESTADO da valvula alterado para: ");
     Serial.println(state);
 }
 
 bool flameDetected()
 {
-    return (analogRead(sensor_fogo) < 600) ? true : false;
+    return (analogRead(SENSOR_FOGO) < 600) ? true : false;
 }
 
 bool gasDetected()
 {
-    return (analogRead(sensor_gas) > 200) ? true : false;
+    return (analogRead(SENSOR_GAS) > 200) ? true : false;
 }
 
 bool movementDetected()
 {
-    return digitalRead(pinoPIR);
+    return digitalRead(PINOPIR);
 }
 
 void setup_sensores ()
 {
-    pinMode(pinoPIR, INPUT);
-    pinMode(sensor_fogo, INPUT);
-    pinMode(sensor_gas, INPUT);
+    pinMode(PINOPIR, INPUT);
+    pinMode(SENSOR_FOGO, INPUT);
+    pinMode(SENSOR_GAS, INPUT);
     pinMode(LED, OUTPUT);
-    pinMode(buzzer, OUTPUT);
-    pinMode(valvula, OUTPUT);
+    pinMode(BUZZER, OUTPUT);
+    pinMode(VALVULA, OUTPUT);
     pinMode(BOTAO, INPUT_PULLUP);
     pinMode(SINGLE_LED, OUTPUT);
 
@@ -70,17 +71,17 @@ void playSong(unsigned long durationMillis) {
 	int freq = odeNotes[i];
 	int noteDuration = odeDurations[i];
 
-	tone(buzzer, freq);
+	tone(BUZZER, freq);
 	digitalWrite(LED, HIGH);
 	delay(noteDuration / 2);   // Nota mais curta para dar pausa
 
-	noTone(buzzer);
+	noTone(BUZZER);
 	digitalWrite(LED, LOW);
 	delay(noteDuration / 2);   // Pausa entre notas
 
 	i = (i + 1) % numNotes;
     }
 
-    noTone(buzzer);
+    noTone(BUZZER);
     digitalWrite(LED, LOW);
 }

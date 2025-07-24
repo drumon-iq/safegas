@@ -34,27 +34,28 @@ void setup() {
 void loop() {
   unsigned long int curr_millis = millis();
   bool estadoBotao = digitalRead(BOTAO);
-  digitalWrite(LED, LOW);
-  tone(buzzer, 0);
 
   if (estadoBotao == LOW && ultimoEstadoBotao == HIGH) {
     setValvula(!valvulaVal);
   }
   ultimoEstadoBotao = estadoBotao;
 
-  if (doDummy && !valvulaVal)
+  if (doDummy && valvulaVal)
     timer += curr_millis - old_millis;
-  else if (!movementDetected() && flameDetected() && !valvulaVal)
+  else if (!movementDetected() && flameDetected() && valvulaVal)
     timer += curr_millis - old_millis;
-  else
+  else {
     timer = 0;
+    digitalWrite(LED, LOW);
+    tone(BUZZER, 0);
+  }
 
   if (timer >= 2 * duration)
     setValvula(false);
   else if (timer >= duration && timer % 4000 == 0) { // Supostamente 4 segundos
     doAlert = !doAlert; //flip pra depois flop
     digitalWrite(LED, doAlert ? HIGH : LOW);
-    tone(buzzer, doAlert ? 4000 : 0);
+    tone(BUZZER, doAlert ? 4000 : 0);
   }
 
   // Maybe loop the client reading before moving on?
@@ -72,9 +73,9 @@ void loop() {
         // Decide what to print
         // Holy mother of inefficiency
         if (Sbuffer.indexOf("gasValue") != -1){
-          client.print(doDummy ? 1234 : analogRead(sensor_gas));
+          client.print(doDummy ? 1234 : analogRead(SENSOR_GAS));
         } else if (Sbuffer.indexOf("flameValue") != -1){
-          client.print(doDummy ? 4321 : analogRead(sensor_fogo));
+          client.print(doDummy ? 4321 : analogRead(SENSOR_FOGO));
         } else if (Sbuffer.indexOf("valveValue") != -1) {
           client.print(valvulaVal ? "1" : "0");
         } else if (Sbuffer.indexOf("toggleValve") != -1) {
