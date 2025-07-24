@@ -21,7 +21,7 @@ int odeDurations[] = {
 void setValvula(bool state)
 {
     if (!doDummy)
-	digitalWrite(VALVULA, state);
+	digitalWrite(VALVULA, !state);
 
     valvulaVal = state;
     digitalWrite(SINGLE_LED, state);
@@ -47,19 +47,21 @@ bool movementDetected()
 
 void setup_sensores ()
 {
+    pinMode(BOTAO, INPUT_PULLUP);
+
     pinMode(PINOPIR, INPUT);
     pinMode(SENSOR_FOGO, INPUT);
     pinMode(SENSOR_GAS, INPUT);
+    pinMode(SINGLE_LED, OUTPUT);
+
     pinMode(LED, OUTPUT);
     pinMode(BUZZER, OUTPUT);
     pinMode(VALVULA, OUTPUT);
-    pinMode(BOTAO, INPUT_PULLUP);
-    pinMode(SINGLE_LED, OUTPUT);
-
-    if (!doDummy)
-	delay(30000); // Tempo para o PIR e pro sensor de gás se calibrarem (?? porque ??)
 
     setValvula(false);
+
+//    if (!doDummy)
+//	delay(30000); // Tempo para o PIR e pro sensor de gás se calibrarem (?? porque ??)
 }
 
 void playSong(unsigned long durationMillis) {

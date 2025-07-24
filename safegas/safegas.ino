@@ -6,8 +6,8 @@
 #define SSID "blyeat"
 #define PASS "123456789"
 
-bool doDebug = true;
-bool doDummy = true;
+bool doDebug = false;
+bool doDummy = false;
 bool ultimoEstadoBotao = false;
 
 char client_c;
@@ -22,7 +22,11 @@ void setup() {
 
   setup_sensores();
 
-  set_duration_min(doDebug ? 1 : 5);
+  if (doDebug)
+    duration = 10 * 1000;
+  else
+    set_duration_min(5);
+
   timer = 0;
   old_millis = 0;
 
@@ -34,10 +38,23 @@ void setup() {
 void loop() {
   unsigned long int curr_millis = millis();
   bool estadoBotao = digitalRead(BOTAO);
+  if (doDebug) {
+    Serial.print("Sensor de gas: ");
+    Serial.println(analogRead(SENSOR_GAS));
 
-  if (estadoBotao == LOW && ultimoEstadoBotao == HIGH) {
-    setValvula(!valvulaVal);
+    Serial.print("Sensor de fogo: ");
+    Serial.println(flameDetected());
+
+    Serial.print("Sensor de presença: ");
+    Serial.println(movementDetected());
+
+    Serial.print("Timer: ");
+    Serial.println(timer);
   }
+
+  if (estadoBotao == LOW && ultimoEstadoBotao == HIGH)
+    setValvula(!valvulaVal);
+
   ultimoEstadoBotao = estadoBotao;
 
   if (doDummy && valvulaVal)
@@ -52,7 +69,7 @@ void loop() {
 
   if (timer >= 2 * duration)
     setValvula(false);
-  else if (timer >= duration && timer % 4000 == 0) { // Supostamente 4 segundos
+  else if (timer >= duration && timer%1000 < 100) {
     doAlert = !doAlert; //flip pra depois flop
     digitalWrite(LED, doAlert ? HIGH : LOW);
     tone(BUZZER, doAlert ? 4000 : 0);
