@@ -52,7 +52,7 @@ void setup_sensores ()
     pinMode(LED, OUTPUT);
     pinMode(buzzer, OUTPUT);
     pinMode(valvula, OUTPUT);
-    pinMode(BOTAO, INPUT);
+    pinMode(BOTAO, INPUT_PULLUP);
     pinMode(SINGLE_LED, OUTPUT);
 
     if (!doDummy)

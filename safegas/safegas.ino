@@ -37,7 +37,7 @@ void loop() {
   digitalWrite(LED, LOW);
   tone(buzzer, 0);
 
-  if (estadoBotao == HIGH && ultimoEstadoBotao == LOW) {
+  if (estadoBotao == LOW && ultimoEstadoBotao == HIGH) {
     setValvula(!valvulaVal);
   }
   ultimoEstadoBotao = estadoBotao;

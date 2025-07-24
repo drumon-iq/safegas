@@ -1,7 +1,7 @@
 #ifndef SENSORES_H
 
 #define sensor_fogo 13
-#define pinoPIR     2
+#define pinoPIR     18
 #define LED	    5
 #define buzzer 	    4
 #define sensor_gas  15
